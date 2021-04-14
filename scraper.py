@@ -12,8 +12,14 @@ def extract_next_links(url, resp):
 def is_valid(url):
     try:
         parsed = urlparse(url)
+        print(parsed)
         if parsed.scheme not in set(["http", "https"]):
             return False
+
+        #delete later (temp)
+        if "ics.uci.edu" in url:
+            return True
+
         return not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
             + r"|png|tiff?|mid|mp2|mp3|mp4"
