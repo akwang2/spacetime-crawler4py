@@ -26,8 +26,9 @@ def is_valid(url):
         for d in domains:
             if d in parsed.netloc:
                  hasValidDomain = True
-        if hasValidDomain == False:
-            return False
+                 return True
+#         if hasValidDomain == False:
+#             return False
 
         return not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
