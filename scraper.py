@@ -1,5 +1,6 @@
 import re
 from urllib.parse import urlparse
+from bs4 import BeautifulSoup
 
 domains = [".ics.uci.edu", ".cs.uci.edu", ".informatics.uci.edu", ".stat.uci.edu", "today.uci.edu/department/information_computer_sciences/"]
 
@@ -9,6 +10,20 @@ def scraper(url, resp):
 
 def extract_next_links(url, resp):
     # Implementation requred.
+    pageurls = []
+    
+    #good response the 200s
+    if resp.status >= 300:
+        return pageurls
+    
+    content = resp.raw_response
+    beautifulSoup = BeautifulSoup(content, 'lxml')
+    
+    for link in soup.find_all('a'):
+        if link.get('href') != None:
+            pageurls.append(link)
+    return pageurls
+    
     return list()
 
 def is_valid(url):
