@@ -13,18 +13,17 @@ def extract_next_links(url, resp):
     pageurls = []
     
     #good response the 200s
-    if resp.status >= 300:
-        return pageurls
+    if resp.status > 299:
+        return []
     
-    content = resp.raw_response
-    beautifulSoup = BeautifulSoup(content, 'lxml')
+    rawContent = resp.raw_response.content
+    beautifulSoup = BeautifulSoup(rawContent, 'lxml')
     
     for link in soup.find_all('a'):
         if link.get('href') != None:
             pageurls.append(link)
     return pageurls
     
-    return list()
 
 def is_valid(url):
     print("Test: ", end="")
