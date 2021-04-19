@@ -19,7 +19,7 @@ def extract_next_links(url, resp):
     rawContent = resp.raw_response.content
     beautifulSoup = BeautifulSoup(rawContent, 'html.parser')
     
-    for link in soup.find_all('a'):
+    for link in beautifulSoup.find_all('a'):
         if link.get('href') != None:
             pageurls.append(link)
     return pageurls
