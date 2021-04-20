@@ -31,7 +31,6 @@ def is_valid(url):
     
     try:
         parsed = urlparse(url)
-        print(parsed)
         if parsed.scheme not in set(["http", "https"]):
             return False
         
@@ -40,9 +39,8 @@ def is_valid(url):
         for d in domains:
             if d in parsed.netloc:
                  hasValidDomain = True
-                 return True
-#         if hasValidDomain == False:
-#             return False
+        if hasValidDomain == False:
+            return False
 
         return not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
