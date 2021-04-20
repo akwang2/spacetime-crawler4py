@@ -63,4 +63,3 @@ def is_valid(url):
         print("Parsed: ", parsed)
         print("Scheme: ", parsed.scheme)
         print("Hostname: ", parsed.hostname)
-        raise
