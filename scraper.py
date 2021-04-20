@@ -42,11 +42,8 @@ def is_valid(url):
         if hasValidDomain == False:
             return False
         
-        
-        
         if re.match(r"^.*calendar.*$", parsed.path.lower()):
             return False
-        
 
         return not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
@@ -63,4 +60,7 @@ def is_valid(url):
 #         raise
     except Exception as e:
         print("URL: ", url)
-        print(e.__class__.__name__)
+        print("Parsed: ", parsed)
+        print("Scheme: ", parsed.scheme)
+        print("Hostname: ", parsed.hostname)
+        raise
