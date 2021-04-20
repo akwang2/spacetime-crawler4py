@@ -21,7 +21,7 @@ def extract_next_links(url, resp):
     
     for link in beautifulSoup.find_all('a'):
         if link.get('href') != None:
-            pageurls.append(link)
+            pageurls.append(link.get('href'))
     return pageurls
     
 
@@ -55,11 +55,7 @@ def is_valid(url):
             + r"|thmx|mso|arff|rtf|jar|csv"
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
 
-#     except TypeError:
-#         print ("TypeError for ", parsed)
-#         raise
-    except Exception as e:
+    except TypeError:
         print("URL: ", url)
-        print("Parsed: ", parsed)
-        print("Scheme: ", parsed.scheme)
-        print("Hostname: ", parsed.hostname)
+        print ("TypeError for ", parsed)
+        raise
