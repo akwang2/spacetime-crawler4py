@@ -44,6 +44,12 @@ def is_valid(url):
         
         if re.match(r"^.*calendar.*$", parsed.path.lower()):
             return False
+        
+        if re.match(r"^.*comment.*$", parsed.path.lower()):
+            return False
+        
+        if re.match(r"^.*respond.*$", parsed.path.lower()):
+            return False
 
         return not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
