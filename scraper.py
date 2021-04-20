@@ -1,8 +1,14 @@
 import re
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
+import nltk
+from nltk.corpus import stopwords
+from enum import unique
+
 
 domains = [".ics.uci.edu", ".cs.uci.edu", ".informatics.uci.edu", ".stat.uci.edu", "today.uci.edu/department/information_computer_sciences/"]
+tokensDict = {}
+uniquePageCount = 0
 
 def scraper(url, resp):
     links = extract_next_links(url, resp)
@@ -12,12 +18,18 @@ def extract_next_links(url, resp):
     # Implementation requred.
     pageurls = []
     
-    #good response the 200s
     if resp.status > 299:
         return []
     
     rawContent = resp.raw_response.content
     beautifulSoup = BeautifulSoup(rawContent, 'html.parser')
+    tokenize(soup.get_text().lower())
+    
+    file = open("tokens.txt", "w")
+    for token in tokensDict:
+        file.write(token, " - ", tokensDict[token])
+    file.close()
+    
     
     for link in beautifulSoup.find_all('a'):
         if link.get('href') != None:
@@ -26,9 +38,6 @@ def extract_next_links(url, resp):
     
 
 def is_valid(url):
-#     print("Test: ", end="")
-#     print(url)
-    
     try:
         parsed = urlparse(url)
         if parsed.scheme not in set(["http", "https"]):
@@ -39,8 +48,9 @@ def is_valid(url):
         for d in domains:
             if d in parsed.netloc:
                  hasValidDomain = True
-        if hasValidDomain == False:
-            return False
+            else:
+                return False
+
         
         if re.match(r"^.*calendar.*$", parsed.path.lower()):
             return False
@@ -51,7 +61,7 @@ def is_valid(url):
         if re.match(r"^.*(\/files).*$", parsed.path.lower()):
             return False
         
-        return not re.match(
+        valid = not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
             + r"|png|tiff?|mid|mp2|mp3|mp4"
             + r"|wav|avi|mov|mpeg|ram|m4v|mkv|ogg|ogv|pdf"
@@ -60,8 +70,29 @@ def is_valid(url):
             + r"|epub|dll|cnf|tgz|sha1"
             + r"|thmx|mso|arff|rtf|jar|csv"
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
+        
+        if valid:
+            uniquePageCount += 1
+            file = open("pagecount.txt", "w")
+            file.write("Page count: ", uniquePageCount)
+            file.close()
+        
+        return valid
 
     except TypeError:
         print("URL: ", url)
         print ("TypeError for ", parsed)
         raise
+    
+def tokenize(text):
+    stopwords = stopwords.words('english')
+    tokens = nltk.word_tokenize(text)
+        
+    for word in tokens: 
+        if word not in stopwords: 
+            if word in tokensDict:
+                tokensDict[word] += 1
+            else:
+                tokensDict[word] = 1
+
+
