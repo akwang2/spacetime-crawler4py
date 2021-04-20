@@ -62,5 +62,5 @@ def is_valid(url):
 #         print ("TypeError for ", parsed)
 #         raise
     except Exception as e:
-        print("URL: " + url)
+        print("URL: ", url)
         print(e.__class__.__name__)
