@@ -45,7 +45,7 @@ def is_valid(url):
         if re.match(r"^.*calendar.*$", parsed.path.lower()):
             return False
         
-        if re.match(r"^.*(respond|comment).*$", parsed.path.lower()):
+        if re.match(r"^.*(respond|comment).*$", parsed.fragment.lower()):
             return False
         
         if re.match(r"^.*(\/files).*$", parsed.path.lower()):
