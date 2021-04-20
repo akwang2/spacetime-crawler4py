@@ -26,8 +26,8 @@ def extract_next_links(url, resp):
     
 
 def is_valid(url):
-    print("Test: ", end="")
-    print(url)
+#     print("Test: ", end="")
+#     print(url)
     
     try:
         parsed = urlparse(url)
@@ -41,6 +41,12 @@ def is_valid(url):
                  hasValidDomain = True
         if hasValidDomain == False:
             return False
+        
+        
+        
+        if re.match(r"^.*calendar.*$", parsed.path.lower()):
+            return False
+        
 
         return not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
@@ -55,3 +61,6 @@ def is_valid(url):
     except TypeError:
         print ("TypeError for ", parsed)
         raise
+    except Exception as e:
+        print("URL: " + url)
+        print(e.__class__.__name__)
