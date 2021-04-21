@@ -23,14 +23,14 @@ def extract_next_links(url, resp):
     
     rawContent = resp.raw_response.content
     beautifulSoup = BeautifulSoup(rawContent, 'html.parser')
-    tokenize(beautifulSoup.get_text().lower())
     
-    file = open("tokens.txt", "w")
-    file.write("Tokens: ")
-    sortedTokens = popular_tokens()
-    for key in sortedTokens:
-        file.write(f"{key} - {sortedTokens[key]}\n")
-    file.close()
+#     tokenize(beautifulSoup.get_text().lower())
+#     file = open("tokens.txt", "w")
+#     file.write("Tokens: ")
+#     sortedTokens = popular_tokens()
+#     for key in sortedTokens:
+#         file.write(f"{key} - {sortedTokens[key]}\n")
+#     file.close()
     
     
     for link in beautifulSoup.find_all('a'):
@@ -83,7 +83,7 @@ def tokenize(text):
     tokens = nltk.word_tokenize(text)
         
     for word in tokens: 
-        if word not in stop_words: 
+        if word not in stop_words and len(word) > 2: 
             if word in tokensDict:
                 tokensDict[word] += 1
             else:
