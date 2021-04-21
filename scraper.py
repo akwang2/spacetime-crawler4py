@@ -85,11 +85,11 @@ def is_valid(url):
         raise
     
 def tokenize(text):
-    stopwords = stopwords.words('english')
+    stop_words = stopwords.words('english')
     tokens = nltk.word_tokenize(text)
         
     for word in tokens: 
-        if word not in stopwords: 
+        if word not in stop_words: 
             if word in tokensDict:
                 tokensDict[word] += 1
             else:
