@@ -62,7 +62,7 @@ def is_valid(url):
         if re.match(r"^.*(\/files).*$", parsed.path.lower()):
             return False
         
-        valid = not re.match(
+        return not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
             + r"|png|tiff?|mid|mp2|mp3|mp4"
             + r"|wav|avi|mov|mpeg|ram|m4v|mkv|ogg|ogv|pdf"
@@ -72,15 +72,6 @@ def is_valid(url):
             + r"|thmx|mso|arff|rtf|jar|csv"
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
         
-        if valid:
-            uniquePageCount += 1
-            file = open("pagecount.txt", "w")
-            file.write("Page count: ")
-            file.write(uniquePageCount)
-            file.close()
-        
-        return valid
-
     except TypeError:
         print("URL: ", url)
         print ("TypeError for ", parsed)
