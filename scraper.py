@@ -6,6 +6,8 @@ from nltk.corpus import stopwords
 
 domains = [".ics.uci.edu", ".cs.uci.edu", ".informatics.uci.edu", ".stat.uci.edu", "today.uci.edu/department/information_computer_sciences/"]
 tokensDict = {}
+longestPage = ""
+longestPageCount = 0
 uniquePageCount = 0
 
 def scraper(url, resp):
@@ -21,14 +23,21 @@ def extract_next_links(url, resp):
     
     rawContent = resp.raw_response.content
     beautifulSoup = BeautifulSoup(rawContent, 'html.parser')
-    tokenize(beautifulSoup.get_text().lower())
+    count = tokenize(beautifulSoup.get_text().lower())
+    if (count > longestPageCount):
+        longestPageCount = count
+        longestPage = url
+    f = open("PageLength.txt", "w")
+    f.write(f"{longestPage} has {longestPageCount} words")
+    f.close()
     
-    tokens = sorted(tokensDict.items(), key=lambda x: x[1], reverse=True)
-    file = open("tokens.txt", "w")
-    file.write("Tokens:\n")
-    for i in tokens[0:50]:
-        file.write(f"{i[0]} - {i[1]}")
-    file.close()
+    getTopTokens()
+#     tokens = sorted(tokensDict.items(), key=lambda x: x[1], reverse=True)
+#     file = open("tokens.txt", "w")
+#     file.write("Tokens:\n")
+#     for i in tokens[0:50]:
+#         file.write(f"{i[0]} - {i[1]}")
+#     file.close()
     
     for link in beautifulSoup.find_all('a'):
         if link.get('href') != None:
@@ -74,9 +83,11 @@ def is_valid(url):
         print ("TypeError for ", parsed)
         raise
     
+    
 def tokenize(text):
     stop_words = stopwords.words('english')
     tokens = nltk.word_tokenize(text)
+    count = 0
          
     for word in tokens: 
         if re.match('^[a-zA-Z0-9]+$', word): 
@@ -85,11 +96,16 @@ def tokenize(text):
                     tokensDict[word] += 1
                 else:
                     tokensDict[word] = 1
+                count += 1
+    return count
                  
-                 
-def popular_tokens():
-    #https://www.askpython.com/python/dictionary/sort-a-dictionary-by-value-in-python
-    sortedTokens = dict(sorted(tokensDict.items(), key=lambda item: item[1])) 
-    return sortedTokens
+
+def getTopTokens():
+    tokens = sorted(tokensDict.items(), key=lambda x: x[1], reverse=True)
+    file = open("tokens.txt", "w")
+    file.write("Tokens:\n")
+    for i in tokens[0:50]:
+        file.write(f"{i[0]} - {i[1]}")
+    file.close()
 
 
