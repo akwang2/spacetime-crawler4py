@@ -1,9 +1,12 @@
-
 import re
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
+import nltk
+from nltk.corpus import stopwords
 
 domains = [".ics.uci.edu", ".cs.uci.edu", ".informatics.uci.edu", ".stat.uci.edu", "today.uci.edu/department/information_computer_sciences/"]
+tokensDict = {}
+uniquePageCount = 0
 
 def scraper(url, resp):
     links = extract_next_links(url, resp)
@@ -66,6 +69,24 @@ def is_valid(url):
         print("URL: ", url)
         print ("TypeError for ", parsed)
         raise
+    
+def tokenize(text):
+    stop_words = stopwords.words('english')
+    tokens = nltk.word_tokenize(text)
+         
+    for word in tokens: 
+        if word not in stop_words and len(word) > 2: 
+            if word in tokensDict:
+                tokensDict[word] += 1
+            else:
+                tokensDict[word] = 1
+                 
+                 
+def popular_tokens():
+    #https://www.askpython.com/python/dictionary/sort-a-dictionary-by-value-in-python
+    sortedTokens = dict(sorted(tokensDict.items(), key=lambda item: item[1])) 
+    return sortedTokens
+
 # import re
 # from urllib.parse import urlparse
 # from bs4 import BeautifulSoup
