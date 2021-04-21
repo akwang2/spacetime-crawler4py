@@ -23,6 +23,13 @@ def extract_next_links(url, resp):
     beautifulSoup = BeautifulSoup(rawContent, 'html.parser')
     tokenize(beautifulSoup.get_text().lower())
     
+    file = open("token.txt", "w")
+    file.write("Tokens: ")
+#     sortedTokens = popular_tokens()
+    for key in tokensDict:
+        file.write(f"{key} - {tokensDict[key]}\n")
+    file.close()
+    
     for link in beautifulSoup.find_all('a'):
         if link.get('href') != None:
             pageurls.append(link.get('href'))
