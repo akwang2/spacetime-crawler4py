@@ -26,8 +26,9 @@ def extract_next_links(url, resp):
     tokenize(beautifulSoup.get_text().lower())
     
     file = open("tokens.txt", "w")
+    file.write("Tokens: ")
     for token in tokensDict:
-        file.write(token, " - ", tokensDict[token])
+        file.write(f'{token} - {tokensDict[token]}')
     file.close()
     
     
@@ -74,7 +75,8 @@ def is_valid(url):
         if valid:
             uniquePageCount += 1
             file = open("pagecount.txt", "w")
-            file.write("Page count: ", uniquePageCount)
+            file.write("Page count: ")
+            file.write(uniquePageCount)
             file.close()
         
         return valid
