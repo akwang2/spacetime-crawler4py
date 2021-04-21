@@ -35,12 +35,6 @@ def extract_next_links(url, resp):
     f.close()
     
     getTopTokens()
-#     tokens = sorted(tokensDict.items(), key=lambda x: x[1], reverse=True)
-#     file = open("tokens.txt", "w")
-#     file.write("Tokens:\n")
-#     for i in tokens[0:50]:
-#         file.write(f"{i[0]} - {i[1]}")
-#     file.close()
     
     for link in beautifulSoup.find_all('a'):
         if link.get('href') != None:
@@ -79,7 +73,7 @@ def is_valid(url):
             + r"|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso"
             + r"|epub|dll|cnf|tgz|sha1"
             + r"|thmx|mso|arff|rtf|jar|csv"
-            + r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
+            + r"|rm|smil|wmv|swf|wma|zip|rar|gz|ppsx)$", parsed.path.lower())
 
     except TypeError:
         print("URL: ", url)
