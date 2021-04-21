@@ -28,13 +28,8 @@ def extract_next_links(url, resp):
     file = open("tokens.txt", "w")
     file.write("Tokens: ")
     sortedTokens = popular_tokens()
-    count = 0
     for key in sortedTokens:
-        if count < 50:
-            file.write(f"{key} - {sortedTokens[key]}\n")
-            count += 1
-        else:
-            break
+        file.write(f"{key} - {sortedTokens[key]}\n")
     file.close()
     
     
