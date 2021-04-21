@@ -16,6 +16,7 @@ def scraper(url, resp):
 
 def extract_next_links(url, resp):
     global longestPageCount
+    global longestPage
 
     # Implementation requred.
     pageurls = []
