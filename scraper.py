@@ -7,14 +7,16 @@ from nltk.corpus import stopwords
 domains = [".ics.uci.edu", ".cs.uci.edu", ".informatics.uci.edu", ".stat.uci.edu", "today.uci.edu/department/information_computer_sciences/"]
 tokensDict = {}
 longestPage = ""
-longestPageCount = 0
 uniquePageCount = 0
+longestPageCount = 0
 
 def scraper(url, resp):
     links = extract_next_links(url, resp)
     return [link for link in links if is_valid(link)]
 
 def extract_next_links(url, resp):
+    global longestPageCount
+
     # Implementation requred.
     pageurls = []
     
