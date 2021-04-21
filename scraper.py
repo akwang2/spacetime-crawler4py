@@ -27,8 +27,13 @@ def extract_next_links(url, resp):
     
     file = open("tokens.txt", "w")
     file.write("Tokens: ")
-    for token in tokensDict:
-        file.write(f'{token} - {tokensDict[token]}')
+    sortedTokens = popular_tokens()
+    count = 0
+    for key in sortedTokens:
+        if count < 50:
+            file.write(f"{key} - {sortedTokens[key]}\n")
+        else:
+            break
     file.close()
     
     
@@ -87,5 +92,11 @@ def tokenize(text):
                 tokensDict[word] += 1
             else:
                 tokensDict[word] = 1
+                
+                
+def popular_tokens():
+    #https://www.askpython.com/python/dictionary/sort-a-dictionary-by-value-in-python
+    sortedTokens = dict(sorted(inp_dict.items(), key=operator.itemgetter(1)))
+    return sortedTokens
 
 
