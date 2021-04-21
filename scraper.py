@@ -97,7 +97,7 @@ def tokenize(text):
                 
 def popular_tokens():
     #https://www.askpython.com/python/dictionary/sort-a-dictionary-by-value-in-python
-    sortedTokens = dict(sorted(inp_dict.items(), key=operator.itemgetter(1)))
+    sortedTokens = dict(sorted(tokensDict.items(), key=lambda item: item[1])) 
     return sortedTokens
 
 
