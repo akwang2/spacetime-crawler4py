@@ -9,6 +9,8 @@ tokensDict = {}
 longestPage = ""
 uniquePageCount = 0
 longestPageCount = 0
+subdomains = {}
+icsSubdomains = set()
 
 def scraper(url, resp):
     links = extract_next_links(url, resp)
@@ -53,7 +55,10 @@ def is_valid(url):
         hasValidDomain = False
         for d in domains:
             if d in parsed.netloc:
-                 hasValidDomain = True
+                hasValidDomain = True
+                if 'ics.uci.edu' in parsed.netloc.lower():
+                    findSubdomain(parsed)
+                icsSubdomains.add(parsed.netloc + parsed.path)
         if hasValidDomain == False:
             return False
         
@@ -65,6 +70,7 @@ def is_valid(url):
         
         if re.match(r"^.*(\/files).*$", parsed.path.lower()):
             return False
+                    
         
         valid = not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
@@ -112,5 +118,25 @@ def getTopTokens():
     for i in tokens[0:50]:
         file.write(f"{i[0]} - {i[1]}\n")
     file.close()
+    
+
+def findSubdomain(parsedUrl):
+    unique = parsedUrl.netloc.lower() + parsedUrl.path
+    if unique not in icsSubdomains:
+        if parsedUrl.netloc.lower() in subdomains:
+            subdomains[parsed.netloc.lower()] += 1
+        else:
+            subdomains[parsed.netloc.lower()] = 1
+            
+
+def saveICSSubdomains():
+    file = open("subdomains.txt", "w")
+    file.write("Subdomains: \n")
+    subdomains = sorted(tokensDict.items(), key=lambda x: x[1], reverse=True)
+    for i in subdomains:
+        file.write(f"{i[0]} - {i[1]}\n")
+    file.close()
+
+
 
 
