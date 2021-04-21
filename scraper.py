@@ -124,9 +124,9 @@ def findSubdomain(parsedUrl):
     unique = parsedUrl.netloc.lower() + parsedUrl.path
     if unique not in icsSubdomains:
         if parsedUrl.netloc.lower() in subdomains:
-            subdomains[parsed.netloc.lower()] += 1
+            subdomains[parsedUrl.netloc.lower()] += 1
         else:
-            subdomains[parsed.netloc.lower()] = 1
+            subdomains[parsedUrl.netloc.lower()] = 1
             
 
 def saveICSSubdomains():
