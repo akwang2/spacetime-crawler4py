@@ -16,12 +16,12 @@ def extract_next_links(url, resp):
     # Implementation requred.
     pageurls = []
     
-    #good response the 200s
     if resp.status > 299:
         return []
     
     rawContent = resp.raw_response.content
     beautifulSoup = BeautifulSoup(rawContent, 'html.parser')
+    tokenize(beautifulSoup.get_text().lower())
     
     for link in beautifulSoup.find_all('a'):
         if link.get('href') != None:
@@ -30,9 +30,6 @@ def extract_next_links(url, resp):
     
 
 def is_valid(url):
-#     print("Test: ", end="")
-#     print(url)
-    
     try:
         parsed = urlparse(url)
         if parsed.scheme not in set(["http", "https"]):
@@ -75,7 +72,7 @@ def tokenize(text):
     tokens = nltk.word_tokenize(text)
          
     for word in tokens: 
-        if word not in stop_words and len(word) > 2: 
+        if word not in stopwords.words('english') and len(word) > 2: 
             if word in tokensDict:
                 tokensDict[word] += 1
             else:
