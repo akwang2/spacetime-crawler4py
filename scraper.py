@@ -23,7 +23,7 @@ def extract_next_links(url, resp):
     
     rawContent = resp.raw_response.content
     beautifulSoup = BeautifulSoup(rawContent, 'html.parser')
-    tokenize(soup.get_text().lower())
+    tokenize(beautifulSoup.get_text().lower())
     
     file = open("tokens.txt", "w")
     for token in tokensDict:
