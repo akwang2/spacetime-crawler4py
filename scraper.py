@@ -32,6 +32,7 @@ def extract_next_links(url, resp):
     for key in sortedTokens:
         if count < 50:
             file.write(f"{key} - {sortedTokens[key]}\n")
+            count += 1
         else:
             break
     file.close()
