@@ -9,8 +9,8 @@ tokensDict = {}
 longestPage = ""
 uniquePageCount = 0
 longestPageCount = 0
-subdomains = {}
-icsSubdomains = set()
+icsSubdomains = {}
+
 
 def scraper(url, resp):
     links = extract_next_links(url, resp)
@@ -56,12 +56,22 @@ def is_valid(url):
         for d in domains:
             if d in parsed.netloc:
                 hasValidDomain = True
-                if 'ics.uci.edu' in parsed.netloc.lower():
-                    findSubdomain(parsed)
-                icsSubdomains.add(parsed.netloc + parsed.path)
+                domain = parsed.netloc.lower()
+                if "ics.uci.edu" in domain:
+                    if domain in icsSubdomains:
+                        icsSubdomains[domain] += 1
+                    else:
+                        icsSubdomains[domain] = 1
         if hasValidDomain == False:
             return False
         
+        f = open("subdomains.txt", "w")
+        f.write("Subdomains: \n")
+        subdomains = sorted(icsSubdomains.items(), key=lambda x: x[1], reverse=True)
+        for i in subdomains:
+            f.write(f"{i[0]} - {i[1]}\n")
+        f.close()
+                
         if re.match(r"^.*calendar.*$", parsed.path.lower()):
             return False
         
@@ -120,22 +130,22 @@ def getTopTokens():
     file.close()
     
 
-def findSubdomain(parsedUrl):
-    unique = parsedUrl.netloc.lower() + parsedUrl.path
-    if unique not in icsSubdomains:
-        if parsedUrl.netloc.lower() in subdomains:
-            subdomains[parsedUrl.netloc.lower()] += 1
-        else:
-            subdomains[parsedUrl.netloc.lower()] = 1
+# def findSubdomain(parsedUrl):
+#     unique = parsedUrl.netloc.lower() + parsedUrl.path
+#     if unique not in icsSubdomains:
+#         if parsedUrl.netloc.lower() in subdomains:
+#             subdomains[parsedUrl.netloc.lower()] += 1
+#         else:
+#             subdomains[parsedUrl.netloc.lower()] = 1
             
 
-def saveICSSubdomains():
-    file = open("subdomains.txt", "w")
-    file.write("Subdomains: \n")
-    subdomains = sorted(tokensDict.items(), key=lambda x: x[1], reverse=True)
-    for i in subdomains:
-        file.write(f"{i[0]} - {i[1]}\n")
-    file.close()
+# def saveICSSubdomains():
+#     file = open("subdomains.txt", "w")
+#     file.write("Subdomains: \n")
+#     subdomains = sorted(tokensDict.items(), key=lambda x: x[1], reverse=True)
+#     for i in subdomains:
+#         file.write(f"{i[0]} - {i[1]}\n")
+#     file.close()
 
 
 
