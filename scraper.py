@@ -68,12 +68,7 @@ def is_valid(url):
             return False
         
         #save the current ics subdomain data into txt file
-        f = open("subdomains.txt", "w")
-        f.write("Subdomains: \n")
-        subdomains = sorted(icsSubdomains.items(), key=lambda x: x[1], reverse=True)
-        for i in subdomains:
-            f.write(f"{i[0]} - {i[1]}\n")
-        f.close()
+        saveSubdomains()
                 
         if re.match(r"^.*calendar.*$", parsed.path.lower()):
             return False
@@ -112,8 +107,8 @@ def is_valid(url):
     
     
 def tokenize(text):
-    stop_words = stopwords.words('english')
     tokens = nltk.word_tokenize(text)
+    thisPageTokens = []
     count = 0
          
     for word in tokens: 
@@ -123,7 +118,10 @@ def tokenize(text):
                     tokensDict[word] += 1
                 else:
                     tokensDict[word] = 1
-                count += 1
+                    
+                if word not in thisPageTokens:
+                    count += 1
+                    thisPageTokens.append(word)
     return count
                  
 
@@ -136,6 +134,13 @@ def getTopTokens():
     file.close()
     
 
-
+def saveSubdomains():
+    f = open("subdomains.txt", "w")
+    f.write("Subdomains: \n")
+#     subdomains = sorted(icsSubdomains.items(), key=lambda x: x[1], reverse=True)
+    alphabetical = sorted(icsSubdomains.keys())
+    for i in alphabetical:
+        f.write(f"{i[0]} - {i[1]}\n")
+    f.close()
 
 
