@@ -10,6 +10,7 @@ longestPage = ""
 uniquePageCount = 0
 longestPageCount = 0
 icsSubdomains = {}
+uniquePages = []
 
 
 def scraper(url, resp):
@@ -56,6 +57,7 @@ def is_valid(url):
         for d in domains:
             if d in parsed.netloc:
                 hasValidDomain = True
+                #check if the url is a subdomain of ics.uci.edu and add to dictionary
                 domain = parsed.netloc.lower()
                 if "ics.uci.edu" in domain:
                     if domain in icsSubdomains:
@@ -65,6 +67,7 @@ def is_valid(url):
         if hasValidDomain == False:
             return False
         
+        #save the current ics subdomain data into txt file
         f = open("subdomains.txt", "w")
         f.write("Subdomains: \n")
         subdomains = sorted(icsSubdomains.items(), key=lambda x: x[1], reverse=True)
@@ -93,7 +96,10 @@ def is_valid(url):
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz|ppsx)$", parsed.path.lower())
         
         if valid:
-            uniquePageCount += 1
+            page = parsed.netloc + parsed.path
+            if page.lower() not in uniquePages:
+                uniquePages.append(page.lower())
+                uniquePageCount += 1
             file = open("PageCount.txt", "w")
             file.write(f"Number of unique pages: {uniquePageCount}")
             file.close()
@@ -129,23 +135,6 @@ def getTopTokens():
         file.write(f"{i[0]} - {i[1]}\n")
     file.close()
     
-
-# def findSubdomain(parsedUrl):
-#     unique = parsedUrl.netloc.lower() + parsedUrl.path
-#     if unique not in icsSubdomains:
-#         if parsedUrl.netloc.lower() in subdomains:
-#             subdomains[parsedUrl.netloc.lower()] += 1
-#         else:
-#             subdomains[parsedUrl.netloc.lower()] = 1
-            
-
-# def saveICSSubdomains():
-#     file = open("subdomains.txt", "w")
-#     file.write("Subdomains: \n")
-#     subdomains = sorted(tokensDict.items(), key=lambda x: x[1], reverse=True)
-#     for i in subdomains:
-#         file.write(f"{i[0]} - {i[1]}\n")
-#     file.close()
 
 
 
