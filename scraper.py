@@ -108,20 +108,16 @@ def is_valid(url):
     
 def tokenize(text):
     tokens = nltk.word_tokenize(text)
-    thisPageTokens = []
     count = 0
          
     for word in tokens: 
-        if re.match('^[a-zA-Z0-9]+$', word): 
-            if word not in stopwords.words('english') and len(word) > 2: 
-                if word in tokensDict:
-                    tokensDict[word] += 1
-                else:
-                    tokensDict[word] = 1
-                    
-                if word not in thisPageTokens:
-                    count += 1
-                    thisPageTokens.append(word)
+        if re.match('^[a-zA-Z0-9]+$', word) and word not in stopwords.words('english') and len(word) > 2: 
+            if word in tokensDict:
+                tokensDict[word] += 1
+            else:
+                tokensDict[word] = 1
+        if re.match('^[a-zA-Z0-9]+$', word) and len(word) > 2:
+            count += 1
     return count
                  
 
@@ -140,7 +136,7 @@ def saveSubdomains():
 #     subdomains = sorted(icsSubdomains.items(), key=lambda x: x[1], reverse=True)
     alphabetical = sorted(icsSubdomains.keys())
     for i in alphabetical:
-        f.write(f"{i[0]} - {i[1]}\n")
+        f.write(f"{i} - {icsSubdomains[i]}\n")
     f.close()
 
 
