@@ -59,18 +59,16 @@ def is_valid(url):
                 #check if the url is a subdomain of ics.uci.edu and add to dictionary
                 domain = parsed.netloc.lower()
                 if "ics.uci.edu" in domain:
-                    subdomainUrl = parsed.scheme + domain
-                    if subdomainUrl in icsSubdomains:
-                        icsSubdomains[subdomainUrl] += 1
+                    if domain in icsSubdomains:
+                        icsSubdomains[domain] += 1
                     else:
-                        icsSubdomains[subdomainUrl] = 1
+                        icsSubdomains[domain] = 1
         if hasValidDomain == False:
             return False
         
-        #save the current ics subdomain data into txt file
         saveSubdomains()
                 
-        if re.match(r"^.*calendar.*$", parsed.path.lower()):
+        if re.match(r"^.*calendar.*$", parsed.path.lower()) or "wics.ics.uci.edu/events/" in url:
             return False
         
         if re.match(r"^.*(respond|comment).*$", parsed.fragment.lower()):
