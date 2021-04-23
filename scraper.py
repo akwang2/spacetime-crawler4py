@@ -130,7 +130,7 @@ def getTopTokens():
 
 def saveSubdomains():
     f = open("subdomains.txt", "w")
-    f.write("Subdomains: \n")
+    f.write(f"Subdomains: {len(icsSubdomains)}\n")
     alphabetical = sorted(icsSubdomains.keys())
     for i in alphabetical:
         f.write(f"{i}, {icsSubdomains[i]}\n")
