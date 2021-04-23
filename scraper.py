@@ -21,7 +21,6 @@ def extract_next_links(url, resp):
     global longestPageCount
     global longestPage
 
-    # Implementation requred.
     pageurls = []
     
     if resp.status > 299:
@@ -60,10 +59,11 @@ def is_valid(url):
                 #check if the url is a subdomain of ics.uci.edu and add to dictionary
                 domain = parsed.netloc.lower()
                 if "ics.uci.edu" in domain:
-                    if domain in icsSubdomains:
-                        icsSubdomains[domain] += 1
+                    subdomainUrl = parsed.scheme + domain
+                    if subdomainUrl in icsSubdomains:
+                        icsSubdomains[subdomainUrl] += 1
                     else:
-                        icsSubdomains[domain] = 1
+                        icsSubdomains[subdomainUrl] = 1
         if hasValidDomain == False:
             return False
         
@@ -133,10 +133,9 @@ def getTopTokens():
 def saveSubdomains():
     f = open("subdomains.txt", "w")
     f.write("Subdomains: \n")
-#     subdomains = sorted(icsSubdomains.items(), key=lambda x: x[1], reverse=True)
     alphabetical = sorted(icsSubdomains.keys())
     for i in alphabetical:
-        f.write(f"{i} - {icsSubdomains[i]}\n")
+        f.write(f"{i}, {icsSubdomains[i]}\n")
     f.close()
 
 
