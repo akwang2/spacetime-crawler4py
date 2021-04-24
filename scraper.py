@@ -17,6 +17,7 @@ def scraper(url, resp):
     links = extract_next_links(url, resp)
     return [link for link in links if is_valid(link)]
 
+
 def extract_next_links(url, resp):
     global longestPageCount
     global longestPage
@@ -68,7 +69,7 @@ def is_valid(url):
         
         saveSubdomains()
                 
-        if re.match(r"^.*calendar.*$", parsed.path.lower()) or "wics.ics.uci.edu/events/" in url:
+        if re.match(r"^.*calendar.*$", parsed.path.lower()):
             return False
         
         if re.match(r"^.*(respond|comment).*$", parsed.fragment.lower()):
